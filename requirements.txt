@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+pandas
+langchain
+langchain-openai
+langchain-google-genai
+langgraph
+python-dotenv
+numpy
+pydantic
+pydantic-settings
+jupyter-client
+plotly
+pyarrow
+websockets
+python-multipart
