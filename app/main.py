@@ -25,11 +25,16 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],  # Frontend URLs
-    allow_origins=["*"],  # Frontend URLs
+    # For local development, uncomment below:
+    # allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    # For deployment, use your actual frontend and backend URLs:
+    allow_origins=[
+        "https://v0-fork1-of-ai-assistant-ui-design.vercel.app",
+        "https://ai-assistant-da.onrender.com"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Include API routes

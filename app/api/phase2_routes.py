@@ -42,7 +42,7 @@ async def process_query(request: QueryRequest):
         else:
             print(f"🆕 Creating new session for dataset: {request.dataset_name}")
             session_id = await session_manager.create_session(request.dataset_name)
-        
+            
         # Load dataset metadata
         metadata_file_path = get_metadata_file_path(request.dataset_name)
         if not file_exists(metadata_file_path):
@@ -55,7 +55,10 @@ async def process_query(request: QueryRequest):
         print(f"📊 Loaded metadata for dataset: {request.dataset_name}")
         
         # Prepare WebSocket URL
-        websocket_url = f"ws://localhost:8000/v2/stream/{session_id}"
+        # For local development, uncomment below:
+        # websocket_url = f"ws://localhost:8000/v2/stream/{session_id}"
+        # For deployment, use your actual backend URL (wss for secure):
+        websocket_url = f"wss://ai-assistant-da.onrender.com/v2/stream/{session_id}"
         
         print(f"✅ Query request processed successfully")
         print(f"🔗 WebSocket URL: {websocket_url}")
@@ -139,6 +142,7 @@ async def websocket_endpoint(websocket: WebSocket, session_id: str):
                                 dataset_metadata=dataset_metadata,
                                 conversation_history=conversation_history
                             )
+                            print('✅ Query processing completed Lakshya ')
                         except Exception as e:
                             print(f"❌ Error processing query: {e}")
                             await websocket_manager.send_error(session_id, f"Query processing error: {str(e)}")
