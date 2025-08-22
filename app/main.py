@@ -57,7 +57,7 @@ def root():
     }
 
 
-@app.get("/health")
+@app.get("/health", methods=["GET", "HEAD"])
 def health_check():
     """Health check endpoint."""
     logger.info("🏥 Health check endpoint accessed")
