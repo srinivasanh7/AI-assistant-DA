@@ -49,32 +49,14 @@ class MultiAgentService:
 
         print(f"🤖 Creating {self.settings.llm_provider.upper()} client...")
         try:
-            import signal
             import time
-            
-            def timeout_handler(signum, frame):
-                raise TimeoutError("LLM client creation timed out")
-            
-            # Set timeout for client creation (Windows doesn't support SIGALRM)
-            if hasattr(signal, 'SIGALRM'):
-                signal.signal(signal.SIGALRM, timeout_handler)
-                signal.alarm(15)  # 15 second timeout
-            
             start_time = time.time()
             print(f"🔄 Attempting to create {self.settings.llm_provider.upper()} client...")
-            
             # Create LLM client using the provider factory
             self.llm = get_configured_llm(self.settings)
-            
-            if hasattr(signal, 'SIGALRM'):
-                signal.alarm(0)  # Cancel timeout
-            
             elapsed = time.time() - start_time
             print(f"✅ {self.settings.llm_provider.upper()} client created successfully in {elapsed:.2f}s")
-            
         except Exception as e:
-            if hasattr(signal, 'SIGALRM'):
-                signal.alarm(0)  # Cancel timeout
             print(f"❌ Failed to create {self.settings.llm_provider.upper()} client: {e}")
             raise
 
@@ -281,7 +263,7 @@ class MultiAgentService:
                             "error_analysis": error_analysis_text if error_analysis_text else "No previous errors."
                         })
                     ),
-                    timeout=45.0  # 45 second hard timeout
+                    timeout=60.0  # 45 second hard timeout
                 )
                 api_elapsed = time.time() - api_start
                 print(f"✅ OpenAI API call completed successfully in {api_elapsed:.2f}s")
