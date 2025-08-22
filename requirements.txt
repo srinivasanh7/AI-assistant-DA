@@ -14,3 +14,4 @@ plotly
 pyarrow
 websockets
 python-multipart
+ipykernel
